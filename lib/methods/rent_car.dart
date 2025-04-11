@@ -1,21 +1,37 @@
-import '../models/car.dart';
+import 'dart:io';
 import '../models/customer.dart';
-import '../models/rental_contract.dart';
-import '../models/payment.dart';
+import '../models/car.dart';
+import '../services/rental_service.dart';
 
-void rentCarForCustomer(List<RentalContract> contracts, Customer customer, Car car, int days, String paymentMethod) {
-  if (!car.isAvailable) {
-    print("car is not available");
+void rentCarByUser(RentalService rentalService, Customer customer) {
+  var availableCars = rentalService.getAvailableCars();
+  if (availableCars.isEmpty) {
+    print("No cars available for rent at the moment");
     return;
   }
 
-  Payment payment = Payment(car.rentalPrice * days, paymentMethod);
-  DateTime rentalDate = DateTime.now();
-  var contract = RentalContract(customer, car, days, rentalDate, payment);
-  contracts.add(contract);
-  car.rentCar(contract.returnDate);
+  print("Choose a car to rent:");
+  for (int i = 0; i < availableCars.length; i++) {
+    print("${i + 1}. ${availableCars[i]}");
+  }
 
-  print("car rented successfully");
-  print(contract);
- // print(payment);
+  stdout.write("Enter car number: ");
+  int carIndex = int.parse(stdin.readLineSync()!) - 1;
+  Car selectedCar = availableCars[carIndex];
+
+  stdout.write("Enter rental days: ");
+  int days = int.parse(stdin.readLineSync()!);
+
+  stdout.write("Enter payment method (Cash/Card): ");
+  String? paymentMethod = stdin.readLineSync();
+
+  
+  stdout.write("Enter customer name: ");
+  String customerName = stdin.readLineSync()?.trim() ?? "Unknown Customer";
+
+  
+  customer.name = customerName;
+
+  
+  rentalService.rentCar(customer, selectedCar, days, paymentMethod ?? "Cash");
 }

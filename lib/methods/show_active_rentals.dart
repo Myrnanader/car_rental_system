@@ -1,6 +1,6 @@
 import '../models/rental_contract.dart';
 
-void showActiveRentalsList(List<RentalContract> contracts) {
+void showActiveRentals(List<RentalContract> contracts) {
   if (contracts.isEmpty) {
     print("No active rentals.");
     return;

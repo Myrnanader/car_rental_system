@@ -1,5 +1,5 @@
-import 'car.dart';
 import 'customer.dart';
+import 'car.dart';
 import 'payment.dart';
 
 class RentalContract {

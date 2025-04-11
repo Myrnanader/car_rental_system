@@ -5,7 +5,8 @@ class Car {
   bool isAvailable;
   DateTime? bookedUntil;
 
-  Car(this.model, this.plateNumber, this.rentalPrice, {this.isAvailable = true, this.bookedUntil});
+  Car(this.model, this.plateNumber, this.rentalPrice,
+      {this.isAvailable = true, this.bookedUntil});
 
   void rentCar(DateTime returnDate) {
     isAvailable = false;

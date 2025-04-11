@@ -1,19 +1,16 @@
+import'dart:io';
 import '../models/car.dart';
-import '../models/rental_contract.dart';
+import '../services/rental_service.dart';
 
-void returnCarToService(List<RentalContract> contracts, Car car) {
-  if (car.isAvailable) {
-    print("Car is already available.");
-    return;
-  }
+void returnCarByUser(RentalService rentalService) {
+  stdout.write("Enter car plate number to return: ");
+  String? plateNumber = stdin.readLineSync();
+  Car? carToReturn = rentalService.cars.firstWhere(
+      (car) => car.plateNumber == plateNumber, orElse: () => Car("", "", 0));
 
-  try {
-    RentalContract contract = contracts.firstWhere((c) => c.car == car);
-    car.returnCar();
-    contracts.remove(contract);
-    print(" Car returned successfully \n $contracts");
-    
-  } catch (e) {
-    print("Car not found in active rentals");
+  if (carToReturn.model.isEmpty) {
+    print("Car not found.");
+  } else {
+    rentalService.returnCar(carToReturn);
   }
 }
